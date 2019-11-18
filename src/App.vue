@@ -1,16 +1,21 @@
 <template>
     <div id="wrap">
         <Header/>
+        <Footer/>
     </div>
 </template>
 
 <script>
     import Header from "@/components/layouts/Header";
+    // 引入 Footer.vue 的默认值
+    import Footer from '@/components/layouts/Footer';
 
     export default {
         name: 'App',
         components: {
-            Header
+            Header,
+            // 注册 Footer
+            Footer
         },
     }
 </script>
@@ -31,6 +36,6 @@
 
     @import "~bootstrap-sass/assets/stylesheets/_bootstrap";
     @import "~font-awesome/scss/font-awesome";
-    @import "./styles/main";
-    @import "./styles/extra";
+    @import "styles/main";
+    @import "styles/extra";
 </style>
