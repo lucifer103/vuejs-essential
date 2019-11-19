@@ -1,6 +1,9 @@
 <template>
     <div id="wrap">
         <Header/>
+        <div id="main-container" class="container main-container">
+            <router-view/>
+        </div>
         <Footer/>
     </div>
 </template>

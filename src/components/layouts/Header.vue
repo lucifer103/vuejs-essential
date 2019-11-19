@@ -9,10 +9,10 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <a href="/" class="navbar-brand">
+                <router-link to="/" class="navbar-brand">
                     <span class="title">{{ logo.title }}</span>
                     <img :src="logo.src" :alt="logo.title">
-                </a>
+                </router-link>
             </div>
 
             <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', {in: showCollapsedNav }]">
@@ -21,14 +21,25 @@
                         <a href="#" @click="changeNavIndex(index)">{{ item }}</a>
                     </li>
                 </ul>
+
+                <!-- 入口组件 -->
+                <div class="navbar-right">
+                    <Entry/>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import Entry from '@/components/layouts/Entry'
+
     export default {
         name: 'Header',
+        // 添加 components 选项，并注册 Entry
+        components: {
+            Entry
+        },
         data() {
             return {
                 logo: {
