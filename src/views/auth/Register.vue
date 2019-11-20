@@ -41,7 +41,6 @@
 
 <script>
     import createCaptcha from "@/utils/createCaptcha"
-    import ls from '@/utils/localStorage'
 
     export default {
         name: 'Register',
@@ -91,8 +90,8 @@
                         // 根据用户名，从线上返回一张头像
                         avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
                     }
-                    // localStorage 的用户信息
-                    const localUser = ls.getItem('user')
+                    // 从仓库获取用户信息
+                    const localUser = this.$store.state.user
 
                     if (localUser) {
                         // 检查是否重名
@@ -108,8 +107,8 @@
             },
             // 登录
             login(user) {
-                // 保存用户信息
-                ls.setItem('user', user)
+                // 分发 login 事件，以保存用户信息和登录
+                this.$store.dispatch('login', user)
                 this.showMsg('注册成功', 'success')
             },
             showMsg(msg, type = 'warning') {
