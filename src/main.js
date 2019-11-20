@@ -6,6 +6,8 @@ import App from './App.vue'
 import router from './router'
 // 引入全局指令
 import './directives'
+// 引入全局消息组件
+import './components'
 
 // 设置 false 以阻止 Vue 在启动时生成生产提示
 Vue.config.productionTip = false
