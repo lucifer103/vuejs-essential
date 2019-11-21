@@ -32,6 +32,20 @@ export default [
                 component: () => import('@/views/users/Profile.vue'),
                 // auth 为 true，标识当前路由需要登录才能访问
                 meta: { auth: true }
+            },
+            // EditAvatar
+            {
+                path: '/users/1/edit_avatar',
+                name: 'EditAvatar',
+                component: () => import('@/views/users/Avatar.vue'),
+                meta: { auth: true }
+            },
+            // EditPassword
+            {
+                path: '/users/1/edit_password',
+                name: 'EditPassword',
+                component: () => import('@/views/users/Password.vue'),
+                meta: { auth: true }
             }
         ]
     }

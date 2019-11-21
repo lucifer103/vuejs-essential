@@ -22,8 +22,13 @@ const router = new Router({
 
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
+    const app = router.app
+    const store = app.$options.store
     // 获取仓库里的登录信息
-    const auth = router.app.$options.store.state.auth
+    const auth = store.state.auth
+
+    // 隐藏消息提示
+    app.$message.hide()
 
     if (
         // 如果当前用户已登录，且目标路由包含 /auth/ ，就跳转到首页
