@@ -45,6 +45,20 @@ const actions = {
                 logout: true
             }
         })
+    },
+    // 更新个人信息
+    updateUser({ state, commit }, user) {
+        // 获取仓库的个人信息
+        const stateUser = state.user
+
+        // 简单的数据类型判断
+        if (stateUser && typeof stateUser === 'object') {
+            // 合并新旧个人信息，等价于 user = Object.assign({}, stateUser, user)
+            user = { ...stateUser, ...user }
+        }
+
+        // 更新个人信息
+        commit('UPDATE_USER', user)
     }
 }
 

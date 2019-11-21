@@ -25,8 +25,12 @@ router.beforeEach((to, from, next) => {
     // 获取仓库里的登录信息
     const auth = router.app.$options.store.state.auth
 
-    if (auth && to.path.indexOf('/auth/') !== -1) {
+    if (
         // 如果当前用户已登录，且目标路由包含 /auth/ ，就跳转到首页
+        (auth && to.path.indexOf('/auth/') !== -1) ||
+        // 当用户没登陆且目标页面要求登录时，跳转到首页
+        (!auth && to.meta.auth)
+    ) {
         next('/')
     } else {
         next()
