@@ -102,7 +102,8 @@
                             hobbies: this.hobbies,
                             introduction: this.introduction
                         })
-                        alert('修改成功')
+                        // 使用实例的 $message 的 show 方法
+                        this.$message.show('修改成功')
                     }
                 })
             }

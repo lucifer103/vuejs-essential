@@ -12,9 +12,11 @@ import './components'
 import store from './store'
 // 引入插件
 import VueSweetalert from './plugins/vue-sweetalert'
+import Message from './plugins/message'
 
 // 使用插件
 Vue.use(VueSweetalert)
+Vue.use(Message)
 
 // 设置 false 以阻止 Vue 在启动时生成生产提示
 Vue.config.productionTip = false
