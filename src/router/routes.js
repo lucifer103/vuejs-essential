@@ -10,15 +10,21 @@ export default [
         name: 'Home',
         component: () => import('@/views/Home')
     },
-    {
-        path: '/auth/login',
-        name: 'Login',
-        component: () => import('@/views/auth/Login')
-    },
     // 其他未配置的路由都跳转到首页
     {
         path: '*',
         // 重定向
         redirect: '/'
     },
+    {
+        path: '/auth/login',
+        name: 'Login',
+        component: () => import('@/views/auth/Login')
+    },
+    // EditUsers
+    {
+        path: '/users/1/edit',
+        name: 'EditUsers',
+        component: () => import('@/views/users/Edit.vue')
+    }
 ]
