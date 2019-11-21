@@ -7,7 +7,9 @@ Vue.use(Vuex)
 
 const state = {
     // 用户信息，初始值从本地 localStorage 获取
-    user: ls.getItem('user')
+    user: ls.getItem('user'),
+    // auth 来保存当前用户的登录状态
+    auth: ls.getItem('auth')
 }
 
 const mutations = {
@@ -16,6 +18,11 @@ const mutations = {
         state.user = user
         // 将改变后的值存入 localStorage
         ls.setItem('user', user)
+    },
+    // UPDATE_AUTH 来改变当前用户的登录状态
+    UPDATE_AUTH(state, auth) {
+        state.auth = auth
+        ls.setItem('auth', auth)
     }
 }
 
@@ -25,6 +32,8 @@ const actions = {
         if (user) {
             commit('UPDATE_USER', user)
         }
+        // 更新当前用户的登录状态为已登录
+        commit('UPDATE_AUTH', true)
         // 跳转到首页
         router.push('/')
     }
