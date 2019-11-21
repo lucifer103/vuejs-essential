@@ -36,6 +36,15 @@ const actions = {
         commit('UPDATE_AUTH', true)
         // 跳转到首页
         router.push('/')
+    },
+    logout({ commit }) {
+        commit('UPDATE_AUTH', false)
+        router.push({
+            name: 'Home',
+            params: {
+                logout: true
+            }
+        })
     }
 }
 

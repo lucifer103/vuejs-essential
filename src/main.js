@@ -10,6 +10,11 @@ import './directives'
 import './components'
 // 引入 store/index.js 的默认值
 import store from './store'
+// 引入插件
+import VueSweetalert from './plugins/vue-sweetalert'
+
+// 使用插件
+Vue.use(VueSweetalert)
 
 // 设置 false 以阻止 Vue 在启动时生成生产提示
 Vue.config.productionTip = false

@@ -3,7 +3,7 @@
         <!-- 已登录，显示用户信息 -->
         <ul v-if="auth" class="nav navbar-nav github-login">
             <li>
-                <a href="javascript:;">
+                <a href="javascript:;" v-dropdown>
                     <span v-if="user">
                         <img v-if="user.avatar" :src="user.avatar" class="avatar-topnav">
                         <span v-if="user.name">{{ user.name }}</span>
@@ -12,7 +12,7 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-sign-out text-md"></i>退出</a></li>
+                    <li><a href="javascript:;" @click="logout"><i class="fa fa-sign-out text-md"></i>退出</a></li>
                 </ul>
             </li>
         </ul>
@@ -43,6 +43,19 @@
                 // 映射 this.user 为 store.state.user
                 'user'
             ])
+        },
+        // 添加 methods 选项，并添加 logout 方法
+        methods: {
+            logout() {
+                this.$swal({
+                    text: '你确定要退出吗？',
+                    buttons: ['取消', '退出']
+                }).then((value) => {
+                    if (value) {
+                        this.$store.dispatch('logout')
+                    }
+                })
+            }
         }
     }
 </script>
