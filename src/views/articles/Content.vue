@@ -17,6 +17,26 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 点赞 -->
+                <div class="votes-container panel panel-default padding-md">
+                    <div class="panel-body vote-box text-center">
+                        <div class="btn-group">
+                            <a href="javascript:;" @click="like" class="vote btn btn-primary popover-with-html" :class="likeClass">
+                                <i class="fa fa-thumbs-up"></i> {{ likeClass ? '已赞' : '点赞'}}
+                            </a>
+                        </div>
+                        <div class="voted-users">
+                            <div class="user-lists">
+                                <span v-for="likeUser in likeUsers" :key="likeUser.uid">
+                                    <!-- 点赞用户是当前用户时，加上类 animated 和 swing 以显示一个特别的动画，animated 是固定的，swing 是动画名称 -->
+                                    <img :src="user && user.avatar" alt="" class="img-thumbnail avatar avatar-middle" :class="{ 'animated swing' : likeUser.uid === 1 }">
+                                </span>
+                            </div>
+                            <div v-if="!likeUsers.length" class="vote-hint">成为第一个点赞的人吧？</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -37,7 +57,9 @@
                 title: '',  // 文章标题
                 content: '',    // 文章内容
                 date: '',   // 创建时间
-                uid: 1  // 用户 ID
+                uid: 1, // 用户 ID
+                likeUsers: [],  // 点赞用户列表
+                likeClass: '',  // 点赞样式
             }
         },
         // 计算属性
@@ -56,8 +78,8 @@
             const article = this.$store.getters.getArticleById(articleId)
 
             if (article) {
-                // 获取文章中的用户 ID、标题、内容以及日期
-                let { uid, title, content, date } = article
+                // 获取文章中的用户 ID、标题、内容、点赞用户以及日期
+                let { uid, title, content, date, likeUsers } = article
 
                 // 设置实例的 uid
                 this.uid = uid
@@ -67,6 +89,10 @@
                 this.content = SimpleMDE.prototype.markdown(emoji.emojify(content, name => name, name => name))
                 // 设置当前实例的 date
                 this.date = date
+                // 更新实例的 likeUsers
+                this.likeUsers = likeUsers || []
+                // 更新 likeClass，点赞用户列表包含当前用户时，赋值为 active ，表示已赞
+                this.likeClass = this.likeUsers.some(likeUser => likeUser.uid === 1) ? 'active' : ''
 
                 this.$nextTick(() => {
                     // 遍历当前时立下的 `pre code` 元素
@@ -96,7 +122,41 @@
                         this.$store.dispatch('post', { articleId: this.articleId })
                     }
                 })
-            }
+            },
+            like(e) {
+                // 未登录时，提示登录
+                if (!this.auth) {
+                    this.$swal({
+                        text: '需要登录以后才能执行此操作。',
+                        buttons: ['取消', '前往登录']
+                    }).then((value) => {
+                        if (value) {
+                            this.$router.push('/auth/login')
+                        }
+                    })
+                } else {
+                    const target = e.currentTarget
+                    // 点赞按钮是否含有 active 类，用它来判断是否已赞
+                    const active = target.classList.contains('active')
+                    const articleId = this.articleId
+
+                    if (active) {
+                        // 清除已赞样式
+                        this.likeClass = ''
+                        // 分发 like 事件取消赞，更新实例的 likeUsers 为返回的值
+                        this.$store.dispatch('like', { articleId }).then((likeUsers) => {
+                            this.likeUsers = likeUsers
+                        })
+                    } else {
+                        // 添加已赞样式
+                        this.likeClass = 'active animated rubberBand'
+                        // 分发 like 事件，传入 isAdd 参数点赞，更新实例的 likeUsers 为返回的值
+                        this.$store.dispatch('like', { articleId, isAdd: true }).then((likeUsers) => {
+                            this.likeUsers = likeUsers
+                        })
+                    }
+                }
+            },
         }
     }
 </script>
