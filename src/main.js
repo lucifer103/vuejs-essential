@@ -13,6 +13,7 @@ import store from './store'
 // 引入插件
 import VueSweetalert from './plugins/vue-sweetalert'
 import Message from './plugins/message'
+import './filters'
 
 // 使用插件
 Vue.use(VueSweetalert)

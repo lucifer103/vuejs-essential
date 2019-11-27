@@ -6,6 +6,7 @@
                     <h1 class="text-center">{{ title }}</h1>
                     <div class="article-meta text-center">
                         <i class="fa fa-clock-o"></i>
+                        <abbr title="">{{ date | moment('from') }}</abbr>
                     </div>
                     <div class="entry-content">
                         <div class="content-body entry-content panel-body">
@@ -21,6 +22,7 @@
 <script>
     import SimpleMDE from 'simplemde'
     import hljs from 'highlight.js'
+    import emoji from 'node-emoji'
 
     export default {
         name: 'Content',
@@ -28,7 +30,8 @@
         data() {
             return {
                 title: '',  // 文章标题
-                content: '' // 文章内容
+                content: '',    // 文章内容
+                date: ''    // 创建时间
             }
         },
         // 在实例创建完成后
@@ -39,11 +42,15 @@
             const article = this.$store.getters.getArticleById(articleId)
 
             if (article) {
-                let { title, content } = article
+                // 获取文章中的标题，内容以及日期
+                let { title, content, date } = article
 
                 this.title = title
                 // 使用编辑器的 markdown 方法将 Markdown 内容转成 HTML
-                this.content = SimpleMDE.prototype.markdown(content)
+                // 先使用 emojify 方法解析 emoji 字符串标识，name => name 标识不认识的就返回原值
+                this.content = SimpleMDE.prototype.markdown(emoji.emojify(content, name => name, name => name))
+                // 设置当前实例的 date
+                this.date = date
 
                 this.$nextTick(() => {
                     // 遍历当前时立下的 `pre code` 元素
