@@ -8,6 +8,7 @@ export default [
     {
         path: '/',
         name: 'Home',
+        alias: '/topics',
         component: () => import('@/views/Home')
     },
     // 其他未配置的路由都跳转到首页
