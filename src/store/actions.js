@@ -165,6 +165,24 @@ export const comment = ({ commit, state }, { articleId, comment, commentId }) =>
                         content,
                         date
                     })
+                } else {    // commitId 不为 undefined 时
+                    for (let comment of comments) {
+                        // 找到对应的评论时
+                        if (parseInt(comment.commentId) === parseInt(commentId)) {
+                            // 更新评论内容
+                            comment.content = content
+                            break
+                        }
+                    }
+                }
+            } else {    // 不存在评论内容时
+                for (let comment of comments) {
+                    // 找到对应的评论时
+                    if (parseInt(comment.commentId) === parseInt(commentId)) {
+                        // 删除这条评论
+                        comments.splice(comments.indexOf(comment), 1)
+                        break
+                    }
                 }
             }
 
