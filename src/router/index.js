@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
         // 有 articleId 且不能找到与其对应的文章时，跳转到首页
         (articleId && !store.getters.getArticleById(articleId)) ||
         // 路由参数中的用户不为当前用户，且找不到与其对应的文章时，跳转到首页
-        (paramUser && paramUser !== user && !store.getters.getArticleById(null, paramUser).length)
+        (paramUser && paramUser !== user && !store.getters.getArticlesByUid(null, paramUser).length)
     ) {
         next('/')
     } else {
