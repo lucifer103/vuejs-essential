@@ -28,8 +28,8 @@
                                     <abbr title="" class="timeago">{{ article.date | moment('from') }}</abbr>
                                 </div>
                             </router-link>
-                            <router-link v-if="user" :to="`/${user.name}`" tag="div" class="avatar pull-left">
-                                <img :src="user.avatar" alt="" class="media-object img-thumbnail avatar avatar-middle">
+                            <router-link :to="`/${article.uname}`" tag="div" class="avatar pull-left">
+                                <img :src="article.uavatar" alt="" class="media-object img-thumbnail avatar avatar-middle">
                             </router-link>
                             <router-link :to="`/articles/${article.articleId}/content`" tag="div" class="infos">
                                 <div class="media-heading">
@@ -86,15 +86,13 @@
             })
         },
         computed: {
-            // 用户登录状态
-            auth() {
-                return this.$store.state.auth
-            },
             ...mapState([
                 'auth',
-                'user',
-                'articles'
-            ])
+                'user'
+            ]),
+            articles() {
+                return this.$store.getters.computedArticles
+            }
         },
         watch: {
             // 监听 auth，它的值变为 false 时，显示操作成功提示

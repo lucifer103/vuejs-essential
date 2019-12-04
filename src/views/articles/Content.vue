@@ -12,8 +12,10 @@
                     <!-- 编辑删除图标 -->
                     <div v-if="auth && uid === 1" class="panel-footer operate">
                         <div class="actions">
-                            <a href="javascript:;" @click="deleteArticle" class="admin"><i class="fa fa-trash-o"></i></a>
-                            <a href="javascript:;" @click="editArticle" class="admin"><i class="fa fa-pencil-square-o"></i></a>
+                            <a href="javascript:;" @click="deleteArticle" class="admin"><i
+                                    class="fa fa-trash-o"></i></a>
+                            <a href="javascript:;" @click="editArticle" class="admin"><i
+                                    class="fa fa-pencil-square-o"></i></a>
                         </div>
                     </div>
                 </div>
@@ -22,24 +24,28 @@
                 <div class="votes-container panel panel-default padding-md">
                     <div class="panel-body vote-box text-center">
                         <div class="btn-group">
-                            <a href="javascript:;" @click="like" class="vote btn btn-primary popover-with-html" :class="likeClass">
+                            <a href="javascript:;" @click="like" class="vote btn btn-primary popover-with-html"
+                               :class="likeClass">
                                 <i class="fa fa-thumbs-up"></i> {{ likeClass ? '已赞' : '点赞'}}
                             </a>
                             <div class="or"></div>
-                            <button @click="showQrcode = true" class="btn btn-success"><i class="fa fa-heart"></i>打赏</button>
+                            <button @click="showQrcode = true" class="btn btn-success"><i class="fa fa-heart"></i>打赏
+                            </button>
                         </div>
                         <div class="voted-users">
                             <div class="user-lists">
                                 <span v-for="likeUser in likeUsers" :key="likeUser.uid">
                                     <!-- 点赞用户是当前用户时，加上类 animated 和 swing 以显示一个特别的动画，animated 是固定的，swing 是动画名称 -->
-                                    <img :src="user && user.avatar" alt="" class="img-thumbnail avatar avatar-middle" :class="{ 'animated swing' : likeUser.uid === 1 }">
+                                    <route-link :to="`/${likeUser.uname}`" :src="likeUser.uavatar" tag="img"
+                                                class="img-thumbnail avatar avatar-middle"
+                                                :class="{ 'animated swing' : likeUser.uid === 1 }"></route-link>
                                 </span>
                             </div>
                             <div v-if="!likeUsers.length" class="vote-hint">成为第一个点赞的人吧 😄</div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 打赏弹窗 -->
                 <Modal :show.sync="showQrcode" class="text-center">
                     <div v-if="user" slot="title">
@@ -49,7 +55,9 @@
                         <p class="text-md">如果你想学习更多前端的知识，VuejsCaff.com 是个不错的开始</p>
                         <div class="payment-qrcode inline-block">
                             <h5>扫一扫打开 VuejsCaff.com</h5>
-                            <p><qrcode-vue value="https://vuejscaff.com/" :size="160"></qrcode-vue></p>
+                            <p>
+                                <qrcode-vue value="https://vuejscaff.com/" :size="160"></qrcode-vue>
+                            </p>
                         </div>
                     </div>
                     <div slot="footer">
@@ -66,27 +74,33 @@
                     </div>
                     <div class="panel-body">
                         <ul id="reply-list" class="list-group row">
-                            <li v-for="(comment, index) in comments" :key="comment.commentId" class="list-group-item media">
+                            <li v-for="(comment, index) in comments" :key="comment.commentId"
+                                class="list-group-item media">
                                 <div class="avatar avatar-container pull-left">
                                     <router-link :to="`/${comment.uname}`">
-                                        <img :src="comment.uavatar" alt="" class="media-object img-thumbnail avatar avatar-middle">
+                                        <img :src="comment.uavatar" alt=""
+                                             class="media-object img-thumbnail avatar avatar-middle">
                                     </router-link>
                                 </div>
                                 <div class="infos">
                                     <div class="media-heading">
-                                        <router-link :to="`/${comment.uname}`" class="remove-padding-left author rm-link-color">
+                                        <router-link :to="`/${comment.uname}`"
+                                                     class="remove-padding-left author rm-link-color">
                                             {{ comment.uname }}
                                         </router-link>
                                         <!-- 编辑删除图标 -->
                                         <span v-if="auth" class="operate pull-right">
                                             <span v-if="comment.uid === 1">
-                                                <a href="javascript:;" @click="editComment(comment.commentId, index)"><i class="fa fa-edit"></i></a>
+                                                <a href="javascript:;" @click="editComment(comment.commentId, index)"><i
+                                                        class="fa fa-edit"></i></a>
                                                 <span> ⋅ </span>
-                                                <a href="javascript:;" @click="deleteComment(comment.commentId)"><i class="fa fa-trash-o"></i></a>
+                                                <a href="javascript:;" @click="deleteComment(comment.commentId)"><i
+                                                        class="fa fa-trash-o"></i></a>
                                             </span>
                                         </span>
                                         <div class="meta">
-                                            <a href="`#reply${index + 1}`" :id="`reply${index + 1}`" class="anchor">#{{ index + 1 }}</a>
+                                            <a href="`#reply${index + 1}`" :id="`reply${index + 1}`" class="anchor">#{{
+                                                index + 1 }}</a>
                                             <span> ⋅ </span>
                                             <abbr title="" class="timeago">
                                                 {{ comment.date | moment('from', { startOf: 'second' }) }}
@@ -94,7 +108,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="preview media-body markdown-reply markdown-body" v-html="comment.content"></div>
+                                    <div class="preview media-body markdown-reply markdown-body"
+                                         v-html="comment.content"></div>
                                 </div>
                             </li>
                         </ul>
@@ -107,16 +122,19 @@
                 <div id="reply-box" class="reply-box form box-block">
                     <div class="form-group comment-editor">
                         <textarea v-if="auth" name="" id="editor"></textarea>
-                        <textarea v-else disabled class="form-control" placeholder="需要登陆后才能发表评论。" style="height: 172px; " name="" id="" cols="30" rows="10"></textarea>
+                        <textarea v-else disabled class="form-control" placeholder="需要登陆后才能发表评论。"
+                                  style="height: 172px; " name="" id="" cols="30" rows="10"></textarea>
                     </div>
                     <div class="form-group reply-post-submit">
                         <button id="reply-btn" :disabled="!auth" @click="comment" class="btn btn-primary">
                             {{ commentId ? '保存编辑' : '回复' }}
                         </button>
-                        <span v-show="commentId" class="help-inline btn-cancel" style="cursor: pointer;" @click="cancelEditComment">取消编辑</span>
+                        <span v-show="commentId" class="help-inline btn-cancel" style="cursor: pointer;"
+                              @click="cancelEditComment">取消编辑</span>
                         <span v-show="!commentId" class="help-inline">Ctrl+Enter</span>
                     </div>
-                    <div v-show="commentHtml" id="preview-box" class="box preview markdown-body" v-html="commentHtml"></div>
+                    <div v-show="commentHtml" id="preview-box" class="box preview markdown-body"
+                         v-html="commentHtml"></div>
                 </div>
             </div>
         </div>
@@ -128,7 +146,7 @@
     import hljs from 'highlight.js'
     import emoji from 'node-emoji'
     // 引入 mapState 辅助函数
-    import { mapState } from 'vuex'
+    import {mapState} from 'vuex'
     // 引入 qrcode.vue 的默认值
     import QrcodeVue from 'qrcode.vue'
 
@@ -170,7 +188,7 @@
 
             if (article) {
                 // 获取文章中的用户 ID、标题、内容、点赞用户以及日期
-                let { uid, title, content, date, likeUsers, comments } = article
+                let {uid, title, content, date, likeUsers, comments} = article
 
                 // 设置实例的 uid
                 this.uid = uid
@@ -246,7 +264,7 @@
             // 编辑文章
             editArticle() {
                 // 点击编辑文章图标，跳到编辑文章页面，并附带当前文章 ID
-                this.$router.push({ name: 'Edit', params: { articleId: this.articleId } })
+                this.$router.push({name: 'Edit', params: {articleId: this.articleId}})
             },
             // 删除文章
             deleteArticle() {
@@ -255,7 +273,7 @@
                     buttons: ['取消', '删除']
                 }).then((value) => {
                     if (value) {
-                        this.$store.dispatch('post', { articleId: this.articleId })
+                        this.$store.dispatch('post', {articleId: this.articleId})
                     }
                 })
             },
@@ -280,15 +298,19 @@
                         // 清除已赞样式
                         this.likeClass = ''
                         // 分发 like 事件取消赞，更新实例的 likeUsers 为返回的值
-                        this.$store.dispatch('like', { articleId }).then((likeUsers) => {
-                            this.likeUsers = likeUsers
+                        // eslint-disable-next-line no-unused-vars
+                        this.$store.dispatch('like', {articleId}).then((likeUsers) => {
+                            // 使用带用户信息的点赞用户
+                            this.likeUsers = this.recompute('likeUsers')
                         })
                     } else {
                         // 添加已赞样式
                         this.likeClass = 'active animated rubberBand'
                         // 分发 like 事件，传入 isAdd 参数点赞，更新实例的 likeUsers 为返回的值
-                        this.$store.dispatch('like', { articleId, isAdd: true }).then((likeUsers) => {
-                            this.likeUsers = likeUsers
+                        // eslint-disable-next-line no-unused-vars
+                        this.$store.dispatch('like', {articleId, isAdd: true}).then((likeUsers) => {
+                            // 使用带用户信息的点赞用户
+                            this.likeUsers = this.recompute('likeUsers')
                         })
                     }
                 }
@@ -298,7 +320,7 @@
                 if (this.commentMarkdown && this.commentMarkdown.trim() !== '') {
                     // 分发 comment 事件以提交评论
                     this.$store.dispatch('comment', {
-                        comment: { content: this.commentMarkdown },
+                        comment: {content: this.commentMarkdown},
                         articleId: this.articleId,
                         // 传入 commentId
                         commentId: this.commentId
@@ -334,11 +356,12 @@
                      * 这种方法只处理了对象的第一层数据，当对象能被 JSON 解析时，可以使用下面的方法进行完成的深拷贝
                      * JSON.parse(JSON.stringify(comments))
                      */
-                    const newComments = comments.map(comment => ({ ...comment }))
+                    // 使用带用户信息的评论
+                    comments = this.recompute('comments')
+                    const newComments = comments.map(comment => ({...comment}))
+                    // eslint-disable-next-line no-unused-vars
                     const user = this.user || {}
                     for (let comment of newComments) {
-                        comment.uname = user.name
-                        comment.uavatar = user.avatar
                         // 将评论内容从 Markdown 转成 HTML
                         comment.content = SimpleMDE.prototype.markdown(emoji.emojify(comment.content, name => name, name => name))
                     }
@@ -410,7 +433,20 @@
                         this.cancelEditComment()
                     }
                 })
-            }
+            },
+            // 返回带用户信息的文章的某项属性
+            recompute(key) {
+                const articleId = this.$route.params.articleId
+                // 这里的文章时基于 getters.computedArticles 的，所以包含用户信息了
+                const article = this.$store.getters.getArticleById(articleId)
+                let arr
+
+                if (article) {
+                    arr = article[key]
+                }
+
+                return arr || []
+            },
         }
     }
 </script>

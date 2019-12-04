@@ -12,13 +12,13 @@
 
                 <ul class="list-group">
                     <!-- 使用 v-for 指令渲染文章列表 -->
-                    <li v-for="article in articles" :key="article.id" class="list-group-item">
-                        <img v-if="user" :src="user.avatar" alt="" class="avatar avatar-small">
+                    <li v-for="article in articles" :key="article.articleId" class="list-group-item">
+                        <img :src="article.uavatar" alt="" class="avatar avatar-small">
                         <router-link :to="`/articles/${article.articleId}/content`" class="title">
                             {{ article.title }}
                         </router-link>
                         <span class="meta pull-right">
-                            <span class="timeage">{{ article.date | moment('from') }}</span>
+                            <span class="timeago">{{ article.date | moment('from') }}</span>
                         </span>
                     </li>
                 </ul>
@@ -33,13 +33,23 @@
 
     export default {
         name: 'List',
+        data() {
+            return {
+                articles: []    // 对应用户文章
+            }
+        },
         computed: {
             // 将指定的状态混入计算属性
             ...mapState([
                 'auth',
-                'user',
-                'articles'
+                'user'
             ])
+        },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                // 确认渲染该组件的对应路由时，获取对应用户文章
+                vm.articles = vm.$store.getters.getArticlesByUid(null, to.params.user)
+            })
         }
     }
 </script>
