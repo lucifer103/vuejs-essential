@@ -97,9 +97,9 @@ export const getArticlesByFilter = (state, getters) => (filter) => {
         filteredArticles = articles.map(articles => ({ ...articles }))
 
         switch(filter) {
-            case 'execllent':
+            case 'excellent':
                 // 将当前用户的文章设置为精华文章
-                filteredArticles = getters.getArticleById(1)
+                filteredArticles = getters.getArticlesByUid(1)
                 break;
             case 'vote':
                 // 将赞的最多的文章排在前面
