@@ -44,14 +44,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- 侧栏 -->
+        <Sidebar />
     </div>
 </template>
 
 <script>
     import { mapState } from 'vuex'
+    // 引入 Sidebar.vue 的默认值
+    import Sidebar from '@/components/layouts/Sidebar'
 
     export default {
         name: 'Home',
+        components: {
+            // 局部注册 Sidebar
+            Sidebar
+        },
         data() {
             return {
                 msg: '',    // 消息
