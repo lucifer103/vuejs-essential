@@ -16,7 +16,9 @@ const state = {
     // 所有文章状态
     articles: ls.getItem('articles'),
     // 搜索值
-    searchValue: ''
+    searchValue: '',
+    // 默认为 location.origin
+    origin: location.origin.indexOf('github.io') !== -1 ? `${location.origin}/vuejs-essential/dist` : location.origin
 }
 
 const mutations = {
