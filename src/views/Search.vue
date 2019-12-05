@@ -4,6 +4,19 @@
             <h3 class="panel-title">
                 <i class="fa fa-search"></i>
                 关于 “<span class="highlight">{{ keyword }}</span>” 的搜索结果，共 {{ results.length }} 条
+                <!-- 排序方式列表 -->
+                <div class="pull-right" style="margin-top: -10px;">
+                    <button v-for="(item, index) in filters"
+                            :key="index"
+                            :disabled="item.filter === filter"
+                            class="btn btn-default btn-sm"
+                            href="javascript:;"
+                            @click="getArticlesByKeyword(keyword, item.filter)"
+                    >
+                        <i :class="`fa fa-${item.icon}`"></i>
+                        {{ item.title }}
+                    </button>
+                </div>
             </h3>
         </div>
         <div class="panel-body">
@@ -47,6 +60,19 @@
             return {
                 keyword: '',    // 关键字
                 results: [],    // 搜索结果
+                filter: 'default',  // 默认排序方式
+                filters: [  // 排序方式列表
+                    {
+                        filter: 'default',
+                        title: '相关性排序',
+                        icon: 'random'
+                    },
+                    {
+                        filter: 'vote',
+                        title: '点赞数排序',
+                        icon: 'thumbs-up'
+                    }
+                ]
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -66,13 +92,17 @@
             next()
         },
         methods: {
-            // 使用关键字 keyword 获取搜索结果
-            getArticlesByKeyword(keyword) {
+            // 使用关键字 keyword 获取搜索结果，添加 filter 参数，以按指定方式排序
+            getArticlesByKeyword(keyword, filter) {
                 if (keyword) {
                     this.keyword = keyword
+                    // 更新排序方式
+                    if (filter) {
+                        this.filter = filter
+                    }
                     // 需要提交事件类型，以更新搜索框的值
                     this.$store.commit('UPDATE_SEARCH_VALUE', keyword)
-                    this.results = this.$store.getters.getArticlesByKeyword(keyword)
+                    this.results = this.$store.getters.getArticlesByKeyword(keyword, filter)
                 }
             }
         }
